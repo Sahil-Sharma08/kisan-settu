@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operator Login | KisanSetu — Procurement Desk</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Core Design System -->
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="bg-[#f8fafc] text-[#0f172a] min-h-screen flex flex-col justify-between antialiased">
+
+  <!-- Top Simple Navigation Bar -->
+  <header class="bg-white border-b border-slate-200 py-3 px-4">
+    <div class="container mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="flex items-center gap-2.5 text-decoration-none">
+        <div class="w-8 h-8 rounded-lg bg-[#0f766e] text-white flex items-center justify-center font-bold text-sm">
+          K
+        </div>
+        <div>
+          <span class="text-lg font-bold text-slate-900 tracking-tight">KisanSetu</span>
+          <span class="text-xs text-slate-500 ml-1">| Operator Desk</span>
+        </div>
+      </a>
+      <a href="../index.html"
+        class="text-xs font-medium text-slate-600 hover:text-[#0f766e] flex items-center gap-1 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Back to Home
+      </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Login Container -->
+  <main class="flex-1 flex items-center justify-center py-10 px-4">
+    <div class="w-full max-w-md">
+
+      <!-- Login Card -->
+      <div class="card shadow-md border-slate-200 bg-white p-6 sm:p-8">
+
+        <!-- Header -->
+        <div class="text-center mb-6">
+          <div
+            class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-teal-50 text-[#0f766e] border border-teal-200 text-[11px] font-semibold mb-2">
+            Facility Terminal Access
+          </div>
+          <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Operator Desk Login</h1>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1">Authenticate to manage gate check-in, token verification,
+            and weighbridge logs</p>
+        </div>
+
+        <!-- Inline Error Banner -->
+        <div id="login-error-box" class="alert alert-danger hidden mb-4 text-xs" role="alert">
+          <svg class="w-4 h-4 text-rose-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span id="login-error-text">Invalid credentials.</span>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" class="space-y-4">
+
+          <!-- Select Assigned Center / Operator Preset -->
+          <div class="form-group mb-3">
+            <div class="flex justify-between items-center mb-1">
+              <label for="center-selector" class="form-label text-xs mb-0">Assigned Procurement Center</label>
+              <span class="text-[10px] text-teal-700 font-semibold bg-teal-50 px-1.5 py-0.5 rounded border border-teal-200">
+                Quick Select
+              </span>
+            </div>
+            <select id="center-selector" class="form-input text-xs focus:border-[#0f766e] focus:ring-[#0f766e] bg-slate-50/80 cursor-pointer font-medium">
+              <option value="operator@demo.com" data-pass="Operator@123" selected>Karnal Central Procurement Center (Karnal)</option>
+              <option value="operator.ambala@demo.com" data-pass="Operator@123">Ambala Grain Market Center (Ambala)</option>
+              <option value="operator.rohtak@demo.com" data-pass="Operator@123">Rohtak Central Procurement Center (Rohtak)</option>
+              <option value="operator.jhajjar@demo.com" data-pass="Operator@123">Jhajjar Anaj Mandi Center (Jhajjar)</option>
+              <option value="operator.sonipat@demo.com" data-pass="Operator@123">Sonipat Grain Yard Center (Sonipat)</option>
+              <option value="operator.panipat@demo.com" data-pass="Operator@123">Panipat Agro Intake Terminal (Panipat)</option>
+              <option value="operator.hisar@demo.com" data-pass="Operator@123">Hisar Mandi Hub (Hisar)</option>
+            </select>
+          </div>
+
+          <!-- Email or Operator ID -->
+          <div class="form-group mb-3">
+            <label for="login-email" class="form-label text-xs">Operator Email or Official ID</label>
+            <input type="text" id="login-email" class="form-input text-sm focus:border-[#0f766e] focus:ring-[#0f766e]"
+              value="operator@demo.com" placeholder="e.g. operator@demo.com" required autocomplete="username">
+          </div>
+
+          <!-- Password -->
+          <div class="form-group mb-2">
+            <div class="flex justify-between items-center mb-1">
+              <label for="login-password" class="form-label text-xs mb-0">Password</label>
+              <a href="#" id="forgot-password-link" class="text-[11px] text-[#0f766e] hover:underline">Forgot
+                Password?</a>
+            </div>
+            <div class="relative">
+              <input type="password" id="login-password"
+                class="form-input text-sm pr-10 focus:border-[#0f766e] focus:ring-[#0f766e]" value="Operator@123" placeholder="••••••••"
+                required autocomplete="current-password">
+              <button type="button" id="toggle-password-btn"
+                class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none"
+                aria-label="Toggle password visibility">
+                <svg id="eye-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                  </path>
+                </svg>
+                <svg id="eye-slash-icon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18">
+                  </path>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" id="submit-login-btn"
+            class="w-full py-2.5 font-semibold text-sm shadow-sm mt-4 text-white bg-[#0f766e] hover:bg-[#115e59] rounded-md transition-colors">
+            Login to Operator Desk
+          </button>
+
+        </form>
+
+        <!-- Access Note -->
+        <div class="mt-6 pt-4 border-t border-slate-100 text-center text-xs text-slate-500">
+          <p class="font-medium text-slate-700">Official Facility Personnel Only</p>
+          <p class="text-[11px] text-slate-400 mt-0.5">Operator accounts are provisioned by District Administration.
+            Self-registration is restricted.</p>
+        </div>
+
+      </div>
+
+      <!-- Demo Access Accordion for Prototype Testing -->
+      <div class="mt-4 card p-3 bg-slate-50 border-slate-200 text-xs">
+        <details class="group" open>
+          <summary class="cursor-pointer font-medium text-slate-600 flex items-center justify-between select-none">
+            <span class="flex items-center gap-1.5 text-slate-700">
+              <span class="w-2 h-2 rounded-full bg-[#0f766e]"></span>
+              <strong>Available Operator Accounts (Multi-Center)</strong>
+            </span>
+            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <div class="pt-3 border-t border-slate-200 mt-2 space-y-2">
+            <p class="text-[11px] text-slate-500">Click any procurement center operator below to instantly log in or autofill:</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+              <button type="button" class="quick-op-btn btn btn-outline btn-sm text-[11px] justify-start py-1.5 px-2.5 w-full hover:border-[#0f766e] hover:bg-teal-50"
+                data-email="operator@demo.com" data-pass="Operator@123">
+                <span class="truncate">🌾 <strong>Karnal Central</strong></span>
+              </button>
+              <button type="button" class="quick-op-btn btn btn-outline btn-sm text-[11px] justify-start py-1.5 px-2.5 w-full hover:border-[#0f766e] hover:bg-teal-50"
+                data-email="operator.ambala@demo.com" data-pass="Operator@123">
+                <span class="truncate">🌾 <strong>Ambala Market</strong></span>
+              </button>
+              <button type="button" class="quick-op-btn btn btn-outline btn-sm text-[11px] justify-start py-1.5 px-2.5 w-full hover:border-[#0f766e] hover:bg-teal-50"
+                data-email="operator.rohtak@demo.com" data-pass="Operator@123">
+                <span class="truncate">🌾 <strong>Rohtak Central</strong></span>
+              </button>
+              <button type="button" class="quick-op-btn btn btn-outline btn-sm text-[11px] justify-start py-1.5 px-2.5 w-full hover:border-[#0f766e] hover:bg-teal-50"
+                data-email="operator.jhajjar@demo.com" data-pass="Operator@123">
+                <span class="truncate">🌾 <strong>Jhajjar Mandi</strong></span>
+              </button>
+              <button type="button" class="quick-op-btn btn btn-outline btn-sm text-[11px] justify-start py-1.5 px-2.5 w-full hover:border-[#0f766e] hover:bg-teal-50"
+                data-email="operator.sonipat@demo.com" data-pass="Operator@123">
+                <span class="truncate">🌾 <strong>Sonipat Yard</strong></span>
+              </button>
+              <button type="button" class="quick-op-btn btn btn-outline btn-sm text-[11px] justify-start py-1.5 px-2.5 w-full hover:border-[#0f766e] hover:bg-teal-50"
+                data-email="operator.panipat@demo.com" data-pass="Operator@123">
+                <span class="truncate">🌾 <strong>Panipat Terminal</strong></span>
+              </button>
+              <button type="button" class="quick-op-btn btn btn-outline btn-sm text-[11px] justify-start py-1.5 px-2.5 w-full hover:border-[#0f766e] hover:bg-teal-50"
+                data-email="operator.hisar@demo.com" data-pass="Operator@123">
+                <span class="truncate">🌾 <strong>Hisar Hub</strong></span>
+              </button>
+            </div>
+
+            <div class="pt-2 border-t border-slate-200 text-[11px] text-slate-500 space-y-1">
+              <div class="font-semibold text-slate-700">Looking for other portals?</div>
+              <div class="flex flex-wrap gap-2 text-teal-700 font-medium">
+                <a href="../pages/login.html" class="hover:underline">Farmer Portal &rarr;</a>
+                <span>•</span>
+                <a href="../admin/login.html" class="hover:underline">District Admin &rarr;</a>
+                <span>•</span>
+                <a href="../admin/super-admin-login.html" class="hover:underline">Super Admin &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Simple Footer -->
+  <footer class="py-4 text-center text-xs text-slate-400 border-t border-slate-200 bg-white">
+    KisanSetu &copy; 2026 • SIH Innovation Project
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginForm = document.getElementById('login-form');
+      const emailInput = document.getElementById('login-email');
+      const passwordInput = document.getElementById('login-password');
+      const errorBox = document.getElementById('login-error-box');
+      const errorText = document.getElementById('login-error-text');
+      const togglePasswordBtn = document.getElementById('toggle-password-btn');
+      const eyeIcon = document.getElementById('eye-icon');
+      const eyeSlashIcon = document.getElementById('eye-slash-icon');
+      const autofillOperatorBtn = document.getElementById('autofill-operator-btn');
+
+      // Password visibility toggle
+      if (togglePasswordBtn) {
+        togglePasswordBtn.addEventListener('click', () => {
+          const isPassword = passwordInput.type === 'password';
+          passwordInput.type = isPassword ? 'text' : 'password';
+          eyeIcon.classList.toggle('hidden', isPassword);
+          eyeSlashIcon.classList.toggle('hidden', !isPassword);
+        });
+      }
+
+      const centerSelector = document.getElementById('center-selector');
+      const quickOpBtns = document.querySelectorAll('.quick-op-btn');
+
+      // Center Selector change listener
+      if (centerSelector) {
+        centerSelector.addEventListener('change', () => {
+          const selectedEmail = centerSelector.value;
+          const selectedPass = centerSelector.options[centerSelector.selectedIndex]?.getAttribute('data-pass') || 'Operator@123';
+          emailInput.value = selectedEmail;
+          passwordInput.value = selectedPass;
+          errorBox.classList.add('hidden');
+        });
+      }
+
+      // Quick Operator 1-Click Buttons
+      quickOpBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const email = btn.getAttribute('data-email');
+          const pass = btn.getAttribute('data-pass') || 'Operator@123';
+          emailInput.value = email;
+          passwordInput.value = pass;
+          errorBox.classList.add('hidden');
+
+          // Sync selector
+          if (centerSelector) {
+            for (let i = 0; i < centerSelector.options.length; i++) {
+              if (centerSelector.options[i].value === email) {
+                centerSelector.selectedIndex = i;
+                break;
+              }
+            }
+          }
+
+          // Trigger smooth direct login
+          loginForm.dispatchEvent(new Event('submit'));
+        });
+      });
+
+      // Form submission handler (Fixed Operator Role)
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        errorBox.classList.add('hidden');
+
+        const result = window.KisanAuth.login(
+          emailInput.value,
+          passwordInput.value,
+          'operator',
+          'dashboard.html'
+        );
+
+        if (result.success) {
+          window.location.href = result.redirectUrl;
+        } else {
+          errorText.textContent = result.error || "Login failed.";
+          errorBox.classList.remove('hidden');
+        }
+      });
+
+      // Handle forgot password UI placeholder
+      const forgotLink = document.getElementById('forgot-password-link');
+      if (forgotLink) {
+        forgotLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          alert("Password recovery for facility operators is managed by the District Admin. Prototype credentials: operator@demo.com / Operator@123");
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

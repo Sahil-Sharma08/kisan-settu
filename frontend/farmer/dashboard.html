@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>किसान डैशबोर्ड | Farmer Dashboard — KisanSetu</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Core Design System -->
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="bg-[#f8fafc] text-[#0f172a] min-h-screen flex flex-col justify-between antialiased">
+
+  <!-- Authenticated Header -->
+  <header class="bg-white border-b border-slate-200 py-3.5 px-4 sticky top-0 z-40 shadow-xs">
+    <div class="container mx-auto flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand & Portal Tag -->
+      <div class="flex items-center gap-3">
+        <a href="dashboard.html"
+          class="w-9 h-9 rounded-lg bg-[#15803d] text-white flex items-center justify-center font-bold text-sm shadow-xs">
+          K
+        </a>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-base font-bold text-slate-900 tracking-tight">KisanSetu</span>
+            <span class="text-xs text-slate-400">| किसान सेतु</span>
+          </div>
+          <div class="text-[11px] font-semibold text-[#15803d] -mt-0.5">
+            किसान पोर्टल (Farmer Portal)
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Header Actions -->
+      <div class="flex items-center gap-3">
+        <!-- Profile Pill Shortcut -->
+        <a href="#profile-summary"
+          class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 hover:bg-slate-100 transition-colors text-xs text-slate-700">
+          <div
+            class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] font-bold"
+            id="header-avatar-initial">
+            K
+          </div>
+          <span class="font-semibold text-slate-900" id="header-user-name">लोड हो रहा है...</span>
+        </a>
+
+        <a href="sales-history.html"
+          class="btn btn-outline btn-sm text-xs font-semibold flex items-center gap-1 py-1.5 px-3 text-slate-700 hover:bg-slate-50">
+          <span>🌾</span> विक्रय इतिहास (Sales History)
+        </a>
+
+        <a href="bookings.html"
+          class="btn btn-outline btn-sm text-xs font-semibold flex items-center gap-1 py-1.5 px-3 text-slate-700 hover:bg-slate-50">
+          <span>📋</span> मेरी बुकिंग (My Bookings)
+        </a>
+
+        <a href="complaints.html"
+          class="btn btn-outline btn-sm text-xs font-semibold flex items-center gap-1 py-1.5 px-3 text-slate-700 hover:bg-slate-50">
+          <span>⚖️</span> शिकायतें (Complaints)
+        </a>
+
+        <span class="badge badge-success text-[11px] py-1 px-2.5 hidden md:inline-flex">
+          सक्रिय सत्र (Active)
+        </span>
+
+        <button type="button" id="logout-btn" class="btn btn-outline btn-sm text-xs py-1.5 px-3">
+          लॉगआउट (Logout)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Dashboard View -->
+  <main class="container mx-auto py-6 sm:py-8 px-4 flex-1">
+
+    <!-- 1. Welcome Section & Primary CTA -->
+    <div class="card bg-gradient-to-r from-emerald-50 via-white to-white border-emerald-200 p-6 mb-6 shadow-xs">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <div
+            class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-[#15803d] border border-emerald-300 text-[11px] font-semibold mb-2">
+            <span>🌾</span> किसान सेवा केंद्र (Farmer Services)
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-bold text-slate-900" id="welcome-user-title">
+            नमस्ते, किसान भाई 👋
+          </h1>
+          <p class="text-sm text-slate-600 mt-1 font-medium">
+            अपनी फसल की खरीद को आसान और व्यवस्थित बनाएं।
+          </p>
+          <p class="text-xs text-slate-400 mt-0.5">
+            Discover procurement centers, schedule arrival slots, and monitor live queue progression.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <a href="centers.html"
+            class="btn btn-primary py-2.5 px-4 font-semibold text-sm shadow-sm inline-flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            खरीद केंद्र खोजें (Find Centers) &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layout Grid: Left Main Flow (2 cols on lg) + Right Profile (1 col on lg) -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- LEFT 2 COLUMNS -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- 2. Active / Upcoming Procurement Status Card -->
+        <div class="card p-6 bg-white border-slate-200 shadow-xs" id="active-status-container">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+            <div class="flex items-center gap-2">
+              <div class="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
+              <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide">
+                मेरी अगली बुकिंग (My Upcoming Booking) • वर्तमान स्थिति
+              </h2>
+            </div>
+            <a href="bookings.html" class="text-[11px] font-semibold text-[#15803d] hover:underline flex items-center gap-1">
+              सभी बुकिंग देखें (View All) &rarr;
+            </a>
+          </div>
+
+          <!-- Dynamic Status Content (Default: No Active Booking) -->
+          <div id="active-booking-content">
+            <div
+              class="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <div class="w-12 h-12 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div class="flex-1 text-center sm:text-left">
+                <h3 class="text-base font-bold text-slate-800">
+                  कोई सक्रिय बुकिंग नहीं <span class="text-xs font-normal text-slate-500 ml-1">(No Active Booking • No upcoming booking)</span>
+                </h3>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                  वर्तमान में आपकी कोई आगामी खरीद बुकिंग या सक्रिय डिजिटल टोकन पर्ची नहीं है। फसल की बिक्री के लिए
+                  केंद्र खोजें और समय चुनें।
+                </p>
+                <div class="mt-3">
+                  <a href="centers.html"
+                    class="btn btn-primary btn-sm text-xs font-semibold py-1.5 px-3 inline-flex items-center gap-1.5">
+                    <span>📍</span> खरीद केंद्र खोजें (Find Procurement Center)
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2.B Crop Sale Summary & Recent Sale Card -->
+        <div class="card p-6 bg-white border-slate-200 shadow-xs space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+              <span>🌾</span> फसल विक्रय सारांश (Crop Sale Summary)
+            </h2>
+            <a href="sales-history.html" class="text-xs font-semibold text-[#15803d] hover:underline flex items-center gap-1">
+              पूर्ण इतिहास देखें (View All) &rarr;
+            </a>
+          </div>
+
+          <!-- 3 KPI Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center sm:text-left">
+            <div class="p-3.5 bg-emerald-50/60 rounded-xl border border-emerald-200">
+              <span class="text-slate-500 block text-[10px] uppercase font-bold">कुल बेची उपज (Total Sold)</span>
+              <span class="font-mono text-lg sm:text-xl font-bold text-slate-900 mt-1 block" id="dash-total-crop-sold">0.00 QTL</span>
+              <span class="text-[10px] text-emerald-700 font-medium">इलेक्ट्रॉनिक तौल प्रमाणित</span>
+            </div>
+
+            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+              <span class="text-slate-500 block text-[10px] uppercase font-bold">संपन्न बिक्री (Completed)</span>
+              <span class="font-mono text-lg sm:text-xl font-bold text-slate-900 mt-1 block" id="dash-completed-sales">0</span>
+              <span class="text-[10px] text-slate-500 font-medium">जारी ई-रसीदें</span>
+            </div>
+
+            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+              <span class="text-slate-500 block text-[10px] uppercase font-bold">कुल खरीद मूल्य (Procurement Value)</span>
+              <span class="font-mono text-lg sm:text-xl font-bold text-[#15803d] mt-1 block" id="dash-total-proc-value">₹0.00</span>
+              <span class="text-[10px] text-slate-400 font-mono">Demo Net Amount</span>
+            </div>
+          </div>
+
+          <!-- Recent Sale Highlight if available -->
+          <div id="dash-recent-sale-container" class="mt-2 pt-3 border-t border-slate-100 hidden">
+            <div class="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-emerald-50/40 rounded-xl border border-emerald-200 text-xs">
+              <div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="text-[10px] font-bold text-emerald-900 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200">
+                    हालिया विक्रय (Recent Sale)
+                  </span>
+                  <span class="font-bold text-slate-900" id="dash-recent-crop">Wheat (गेहूं)</span>
+                  <span class="text-slate-400">•</span>
+                  <span class="font-mono font-bold text-slate-800" id="dash-recent-quantity">52.50 QTL</span>
+                </div>
+                <div class="text-[11px] text-slate-500 mt-1" id="dash-recent-meta">
+                  Rohtak Procurement Center • Net Demo Value: ₹1,27,312.50
+                </div>
+              </div>
+              <a id="dash-recent-receipt-link" href="receipt.html" class="btn btn-outline btn-sm text-xs font-semibold py-1.5 px-3 bg-white text-emerald-800 border-emerald-300 hover:bg-emerald-50 flex items-center gap-1.5 shadow-xs">
+                <span>🧾</span> डिजिटल रसीद देखें (View Receipt) &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Quick Actions Grid (4 Cards) -->
+        <div>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-3 flex items-center gap-2">
+            <span>⚡</span> त्वरित सेवाएं (Quick Actions)
+          </h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+            <!-- Action 1: Find Centers -->
+            <a href="centers.html"
+              class="card p-5 bg-white border-slate-200 hover:border-emerald-500 hover:shadow-sm transition-all group flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <div
+                    class="w-10 h-10 rounded-lg bg-emerald-50 text-[#15803d] flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                  </div>
+                  <span class="badge badge-success text-[10px]">उपलब्ध (Active)</span>
+                </div>
+                <h3 class="text-sm font-bold text-slate-900 group-hover:text-[#15803d] transition-colors">
+                  खरीद केंद्र खोजें
+                </h3>
+                <div class="text-[11px] font-medium text-slate-400">Find Procurement Centers</div>
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                  पास के अधिकृत खरीद केंद्र देखें और वर्तमान भीड़ की स्थिति जांचें।
+                </p>
+              </div>
+              <div
+                class="mt-4 pt-2 border-t border-slate-100 text-xs font-semibold text-[#15803d] flex items-center gap-1">
+                केंद्र सूची देखें &rarr;
+              </div>
+            </a>
+
+            <!-- Action 2: My Bookings -->
+            <a href="bookings.html"
+              class="card p-5 bg-white border-slate-200 hover:border-emerald-500 hover:shadow-sm transition-all group flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <div
+                    class="w-10 h-10 rounded-lg bg-emerald-50 text-[#15803d] flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                      </path>
+                    </svg>
+                  </div>
+                  <span class="badge badge-info text-[10px]">इतिहास व टोकन</span>
+                </div>
+                <h3 class="text-sm font-bold text-slate-900 group-hover:text-[#15803d] transition-colors">
+                  मेरी बुकिंग
+                </h3>
+                <div class="text-[11px] font-medium text-slate-400">My Bookings</div>
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                  सभी पंजीकृत समय स्लॉट, टोकन पर्ची और रद्दीकरण विकल्प देखें।
+                </p>
+              </div>
+              <div
+                class="mt-4 pt-2 border-t border-slate-100 text-xs font-semibold text-[#15803d] flex items-center gap-1">
+                बुकिंग सूची देखें &rarr;
+              </div>
+            </a>
+
+            <!-- Action 3: Live Queue -->
+            <a href="queue.html" id="quick-action-queue-btn"
+              class="card p-5 bg-white border-slate-200 hover:border-emerald-500 hover:shadow-sm transition-all group flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <div
+                    class="w-10 h-10 rounded-lg bg-emerald-50 text-[#15803d] flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  </div>
+                  <span class="badge badge-success text-[10px]">लाइव ट्रैकिंग</span>
+                </div>
+                <h3 class="text-sm font-bold text-slate-900 group-hover:text-[#15803d] transition-colors">
+                  लाइव कतार
+                </h3>
+                <div class="text-[11px] font-medium text-slate-400">Live Queue</div>
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                  गेट और वजन कांटे पर अपनी गाड़ी का वास्तविक क्रम और आगे के वाहनों की संख्या देखें।
+                </p>
+              </div>
+              <div
+                class="mt-4 pt-2 border-t border-slate-100 text-xs font-semibold text-[#15803d] flex items-center gap-1">
+                कतार स्थिति देखें &rarr;
+              </div>
+            </a>
+
+            <!-- Action 4: Sales History -->
+            <a href="sales-history.html"
+              class="card p-5 bg-white border-slate-200 hover:border-emerald-500 hover:shadow-sm transition-all group flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <div
+                    class="w-10 h-10 rounded-lg bg-emerald-50 text-[#15803d] flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                      </path>
+                    </svg>
+                  </div>
+                  <span class="badge badge-success text-[10px]">डिजिटल रसीदें</span>
+                </div>
+                <h3 class="text-sm font-bold text-slate-900 group-hover:text-[#15803d] transition-colors">
+                  विक्रय इतिहास
+                </h3>
+                <div class="text-[11px] font-medium text-slate-400">Sales History</div>
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                  संपन्न खरीद रसीदें, फसल तौल प्रमाण पत्र और देय खरीद मूल्य विवरण देखें।
+                </p>
+              </div>
+              <div
+                class="mt-4 pt-2 border-t border-slate-100 text-xs font-semibold text-[#15803d] flex items-center gap-1">
+                विक्रय रसीदें देखें &rarr;
+              </div>
+            </a>
+
+          </div>
+        </div>
+
+        <!-- 4. Recommended Procurement Centers Section -->
+        <div class="card p-6 bg-white border-slate-200 shadow-xs">
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100 mb-4">
+            <div>
+              <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide">
+                अनुशंसित खरीद केंद्र (Recommended Centers)
+              </h2>
+              <p class="text-xs text-slate-500 mt-0.5">
+                प्रमुख खरीद केंद्र और वर्तमान भीड़ की स्थिति (Up to 3 centers)
+              </p>
+            </div>
+            <a href="centers.html" class="text-xs font-semibold text-[#15803d] hover:underline flex items-center gap-1">
+              सभी केंद्र देखें (View All) &rarr;
+            </a>
+          </div>
+
+          <!-- Dynamic Container for up to 3 center cards -->
+          <div id="recommended-centers-list" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="col-span-full py-8 text-center text-xs text-slate-400">
+              केंद्र लोड हो रहे हैं... (Loading centers...)
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT 1 COLUMN: Farmer Profile Summary & Support -->
+      <div class="space-y-6">
+
+        <!-- 5. Farmer Profile Summary Card -->
+        <div id="profile-summary" class="card p-6 bg-white border-slate-200 shadow-xs">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+            <h2 class="text-xs font-bold text-slate-900 uppercase tracking-wide flex items-center gap-1.5">
+              <span>👤</span> किसान प्रोफाइल (Profile Summary)
+            </h2>
+            <span class="badge badge-success text-[10px]">सत्यापित (Verified)</span>
+          </div>
+
+          <div class="space-y-3.5 text-xs">
+            <div>
+              <span class="text-slate-400 block text-[11px]">नाम (Farmer Name)</span>
+              <span class="font-bold text-slate-900 text-sm" id="profile-name">-</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
+              <div>
+                <span class="text-slate-400 block text-[11px]">गांव (Village)</span>
+                <span class="font-medium text-slate-800" id="profile-village">-</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block text-[11px]">ज़िला (District)</span>
+                <span class="font-medium text-slate-800" id="profile-district">-</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
+              <div>
+                <span class="text-slate-400 block text-[11px]">राज्य (State)</span>
+                <span class="font-medium text-slate-800" id="profile-state">-</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block text-[11px]">मोबाइल (Phone)</span>
+                <span class="font-medium text-slate-800" id="profile-phone">-</span>
+              </div>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100">
+              <span class="text-slate-400 block text-[11px]">मुख्य फसल (Primary Crop)</span>
+              <span class="font-semibold text-emerald-800" id="profile-crop">-</span>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100">
+              <span class="text-slate-400 block text-[11px]">खेत का आकार (Farm Size)</span>
+              <span class="font-medium text-slate-800" id="profile-farm-size">-</span>
+            </div>
+
+            <!-- Profile Demo Statistics -->
+            <div class="grid grid-cols-3 gap-1 pt-2 border-t border-slate-100 text-center">
+              <div class="bg-slate-50 p-2 rounded">
+                <span class="text-slate-400 block text-[9px] uppercase font-bold">बुकिंग</span>
+                <span class="font-bold text-slate-800 text-xs" id="profile-stat-bookings">0</span>
+              </div>
+              <div class="bg-slate-50 p-2 rounded">
+                <span class="text-slate-400 block text-[9px] uppercase font-bold">बिक्री</span>
+                <span class="font-bold text-emerald-800 text-xs" id="profile-stat-sales">0</span>
+              </div>
+              <div class="bg-slate-50 p-2 rounded">
+                <span class="text-slate-400 block text-[9px] uppercase font-bold">कुल तौल</span>
+                <span class="font-bold text-slate-800 text-[11px]" id="profile-stat-weight">0 Q</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5 pt-3 border-t border-slate-100 text-[11px] text-slate-400 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+              </path>
+            </svg>
+            <span>सुरक्षित किसान डेटा (Protected Profile)</span>
+          </div>
+        </div>
+
+        <!-- 6. Farmer Helpline & Procurement Assistance Card -->
+        <div class="card p-5 bg-slate-50 border-slate-200 text-xs">
+          <h3 class="font-bold text-slate-800 mb-2 flex items-center gap-1.5">
+            <span>📞</span> किसान सहायता (Procurement Help)
+          </h3>
+          <p class="text-slate-500 leading-relaxed text-[11px] mb-3">
+            स्लॉट बुकिंग या कतार संबंधी किसी भी कठिनाई के लिए टोल-फ्री हेल्पलाइन या केंद्र ऑपरेटर से संपर्क करें।
+          </p>
+          <div class="space-y-1.5 font-mono text-[11px] text-slate-700">
+            <div class="flex items-center justify-between py-1 border-b border-slate-200">
+              <span>टोल-फ्री नंबर:</span>
+              <span class="font-bold text-[#15803d]">1800-180-1551</span>
+            </div>
+            <div class="flex items-center justify-between py-1">
+              <span>समय (Timing):</span>
+              <span class="font-medium">प्रातः 09:00 - सायं 06:00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. Grievance & Redressal Shortcut Card -->
+        <div class="card p-5 bg-white border-slate-200 text-xs shadow-2xs">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-100 mb-2.5">
+            <h3 class="font-bold text-slate-800 flex items-center gap-1.5">
+              <span>⚖️</span> शिकायत निवारण (Grievance)
+            </h3>
+            <span class="badge badge-info text-[10px]" id="dash-complaints-badge">0 Active</span>
+          </div>
+          <p class="text-slate-500 leading-relaxed text-[11px] mb-3">
+            तौल, स्लॉट, कतार अथवा खरीद से जुड़ी किसी भी समस्या के समाधान हेतु शिकायत दर्ज करें।
+          </p>
+          <div class="space-y-2">
+            <a href="complaints.html?action=new"
+              class="btn btn-primary btn-sm w-full text-xs font-bold py-2 rounded-xs inline-flex items-center justify-center gap-1">
+              <span>+</span> शिकायत दर्ज करें (File Complaint)
+            </a>
+            <a href="complaints.html"
+              class="btn btn-outline btn-sm w-full text-xs font-semibold py-1.5 rounded-xs inline-flex items-center justify-center text-slate-700">
+              मेरी शिकायतें देखें (View My Complaints)
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Simple Footer -->
+  <footer class="py-4 text-center text-xs text-slate-400 border-t border-slate-200 bg-white">
+    KisanSetu &copy; 2026 • SIH Innovation Project
+  </footer>
+
+  <!-- Scripts: Mock Data, Utils, Auth Engine, Farmer UI, and Complaints -->
+  <script src="../js/mock-data.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="farmer.js"></script>
+  <script src="../js/complaints.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Enforce Farmer route protection
+      const user = window.KisanAuth.requireAuth('farmer', '../pages/login.html');
+      if (!user) return;
+
+      // Update complaints badge
+      if (window.KisanComplaints) {
+        const myCmps = window.KisanComplaints.getFarmerComplaints(user.id);
+        const activeCmps = myCmps.filter(c => ['OPEN', 'ACKNOWLEDGED', 'IN_PROGRESS', 'ESCALATED'].includes(c.status));
+        const badgeEl = document.getElementById('dash-complaints-badge');
+        if (badgeEl) {
+          badgeEl.textContent = `${activeCmps.length} Active`;
+          if (activeCmps.length > 0) {
+            badgeEl.className = 'badge badge-warning text-[10px] font-bold';
+          }
+        }
+      }
+
+      // 2. Populate Header & Welcome info
+      const farmerName = user.name || "Demo Farmer";
+      document.getElementById('header-user-name').textContent = farmerName;
+      document.getElementById('header-avatar-initial').textContent = farmerName.charAt(0).toUpperCase();
+      document.getElementById('welcome-user-title').innerHTML = `नमस्ते, ${farmerName} 👋`;
+
+      // 3. Logout handler
+      document.getElementById('logout-btn').addEventListener('click', () => {
+        window.KisanAuth.logout('../pages/login.html');
+      });
+
+      // 4. Populate Farmer Profile Summary
+      const profile = user.profile || {};
+      document.getElementById('profile-name').textContent = farmerName;
+      document.getElementById('profile-village').innerHTML = window.FarmerPortal.formatValue(profile.village || user.village);
+      document.getElementById('profile-district').innerHTML = window.FarmerPortal.formatValue(profile.district || user.district);
+      document.getElementById('profile-state').innerHTML = window.FarmerPortal.formatValue(profile.state || user.state);
+      document.getElementById('profile-phone').innerHTML = window.FarmerPortal.formatValue(user.phone);
+      document.getElementById('profile-crop').innerHTML = window.FarmerPortal.formatValue(profile.primaryCrop || user.primaryCrop);
+      document.getElementById('profile-farm-size').innerHTML = window.FarmerPortal.formatValue(profile.farmSize || user.farmSize);
+
+      // 5. Render Active / Upcoming Procurement Status
+      const activeBookingContainer = document.getElementById('active-booking-content');
+
+      function renderUpcomingSection() {
+        const upcomingBooking = window.FarmerPortal.getUpcomingBooking();
+        const activeBooking = window.FarmerPortal.getActiveBooking();
+        const displayBooking = upcomingBooking || (activeBooking && window.FarmerPortal.getBookingStatus(activeBooking) !== "CANCELLED" ? activeBooking : null);
+
+        if (displayBooking && displayBooking.bookingId) {
+          const status = window.FarmerPortal.getBookingStatus(displayBooking);
+          const badge = window.FarmerPortal.getBookingStatusBadge(status);
+          const canCancel = window.FarmerPortal.canCancelBooking(displayBooking);
+          const tokenNum = displayBooking.tokenId || window.FarmerPortal.generateTokenNumber(displayBooking);
+
+          const cancelBtnHtml = canCancel
+            ? `<button type="button" id="dash-cancel-booking-btn" data-id="${displayBooking.bookingId}" data-center="${displayBooking.centerName || ''}" data-slot="${displayBooking.bookingDate || ''} • ${displayBooking.timeSlot || ''}"
+                 class="btn btn-outline btn-sm text-xs font-semibold py-1.5 px-3 text-rose-700 hover:bg-rose-50 border-rose-200 flex items-center gap-1">
+                 <span>✕</span> रद्द करें (Cancel Booking)
+               </button>`
+            : '';
+
+          activeBookingContainer.innerHTML = `
+            <div class="p-5 rounded-lg bg-emerald-50/60 border border-emerald-200 space-y-4">
+              <div class="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${badge.badgeClass}">
+                      <span class="w-1.5 h-1.5 rounded-full ${badge.dotColor} ${status === 'CONFIRMED' ? 'animate-pulse' : ''}"></span>
+                      ${badge.labelHindi} (${badge.labelEnglish})
+                    </span>
+                    <span class="text-xs font-mono font-bold text-slate-700 bg-white px-2 py-0.5 rounded border border-slate-200">
+                      Token: ${tokenNum}
+                    </span>
+                    <span class="text-[10px] text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                      डेमो डेटा • Demo Data
+                    </span>
+                  </div>
+                  <h3 class="text-base font-bold text-slate-900">${displayBooking.centerName}</h3>
+                  <p class="text-xs text-slate-500">${displayBooking.district}, ${displayBooking.state} • ${displayBooking.commodity}</p>
+                </div>
+
+                <div class="text-right">
+                  <span class="text-slate-400 block text-[10px] uppercase font-bold">आगमन समय स्लॉट</span>
+                  <span class="text-xs font-bold text-slate-800">${displayBooking.bookingDate}</span>
+                  <span class="text-xs font-bold text-[#15803d] block">${displayBooking.timeSlot}</span>
+                </div>
+              </div>
+
+              <div class="pt-3 border-t border-emerald-200/60 flex flex-wrap items-center justify-between gap-2">
+                <span class="text-[11px] text-slate-500">बुकिंग आईडी: <strong class="font-mono text-slate-700">${displayBooking.bookingId}</strong></span>
+                <div class="flex flex-wrap items-center gap-2">
+                  <a href="booking-details.html?id=${encodeURIComponent(displayBooking.bookingId)}" class="btn btn-outline btn-sm text-xs font-semibold py-1.5 px-3 flex items-center gap-1">
+                    बुकिंग विवरण (View Booking) &rarr;
+                  </a>
+                  ${cancelBtnHtml}
+                  <a href="queue.html" class="btn btn-primary btn-sm text-xs font-semibold py-1.5 px-3 shadow-xs flex items-center gap-1">
+                    <span>⚡ लाइव कतार (Live Queue)</span>
+                  </a>
+                  <a href="procurement-status.html" class="btn btn-outline btn-sm text-xs font-semibold py-1.5 px-3">
+                    खरीद स्थिति (Status)
+                  </a>
+                  <a href="token.html" class="btn btn-outline btn-sm text-xs font-semibold py-1.5 px-3">
+                    मेरा डिजिटल टोकन
+                  </a>
+                  <a href="booking-confirmation.html" class="btn btn-outline btn-sm text-xs font-semibold py-1.5 px-2.5">
+                    रसीद (Receipt)
+                  </a>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          activeBookingContainer.innerHTML = `
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <div class="w-12 h-12 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div class="flex-1 text-center sm:text-left">
+                <h3 class="text-base font-bold text-slate-800">
+                  कोई सक्रिय बुकिंग नहीं <span class="text-xs font-normal text-slate-500 ml-1">(No Active Booking • No upcoming booking)</span>
+                </h3>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                  वर्तमान में आपकी कोई आगामी खरीद बुकिंग या सक्रिय डिजिटल टोकन पर्ची नहीं है। फसल की बिक्री के लिए
+                  केंद्र खोजें और समय चुनें।
+                </p>
+                <div class="mt-3">
+                  <a href="centers.html"
+                    class="btn btn-primary btn-sm text-xs font-semibold py-1.5 px-3 inline-flex items-center gap-1.5">
+                    <span>📍</span> खरीद केंद्र खोजें (Find Procurement Center)
+                  </a>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      renderUpcomingSection();
+
+      // Dashboard Cancel Modal logic
+      const dashCancelModal = document.getElementById('dash-cancel-modal');
+      const dashModalBookingId = document.getElementById('dash-modal-booking-id');
+      const dashModalCenterName = document.getElementById('dash-modal-center-name');
+      const dashModalKeepBtn = document.getElementById('dash-modal-keep-btn');
+      const dashModalConfirmBtn = document.getElementById('dash-modal-confirm-btn');
+      let dashPendingCancelId = null;
+
+      activeBookingContainer.addEventListener('click', (e) => {
+        const cancelBtn = e.target.closest('#dash-cancel-booking-btn');
+        if (!cancelBtn) return;
+        dashPendingCancelId = cancelBtn.dataset.id;
+        dashModalBookingId.textContent = dashPendingCancelId;
+        dashModalCenterName.textContent = cancelBtn.dataset.center || 'खरीद केंद्र';
+        dashCancelModal.classList.remove('hidden');
+      });
+
+      dashModalKeepBtn?.addEventListener('click', () => {
+        dashCancelModal.classList.add('hidden');
+        dashPendingCancelId = null;
+      });
+
+      dashModalConfirmBtn?.addEventListener('click', () => {
+        if (!dashPendingCancelId) return;
+        const res = window.FarmerPortal.cancelBooking(dashPendingCancelId);
+        dashCancelModal.classList.add('hidden');
+        if (res.success) {
+          renderUpcomingSection();
+          alert('बुकिंग सफलतापूर्वक रद्द कर दी गई (Booking cancelled successfully)।');
+        } else {
+          alert(`रद्दीकरण असफल: ${res.error || 'अज्ञात त्रुटि'}`);
+        }
+        dashPendingCancelId = null;
+      });
+
+      // 6. Quick Action Live Queue Handler
+      const quickQueueBtn = document.getElementById('quick-action-queue-btn');
+      if (quickQueueBtn) {
+        quickQueueBtn.addEventListener('click', (e) => {
+          const current = window.FarmerPortal.getUpcomingBooking() || window.FarmerPortal.getActiveBooking();
+          if (!current || !current.bookingId || window.FarmerPortal.getBookingStatus(current) === 'CANCELLED') {
+            e.preventDefault();
+            window.FarmerPortal.showInfoModal(
+              "सक्रिय बुकिंग आवश्यक है (Booking Required)",
+              "लाइव कतार देखने के लिए पहले खरीद केंद्र पर समय स्लॉट बुक करें।<br><br><span class=\"text-xs text-slate-500\">Please book a procurement slot first to access real-time queue tracking.</span>"
+            );
+          }
+        });
+      }
+
+      // 7. Render Recommended Centers (up to 3 cards)
+      const centersContainer = document.getElementById('recommended-centers-list');
+      const allCenters = window.FarmerPortal.getCenters();
+      const recommendedCenters = allCenters.slice(0, 3);
+
+      if (recommendedCenters.length === 0) {
+        centersContainer.innerHTML = `
+          <div class="col-span-full py-6 text-center text-xs text-slate-400">
+            कोई अनुशंसित खरीद केंद्र उपलब्ध नहीं है।
+          </div>
+        `;
+      } else {
+        centersContainer.innerHTML = recommendedCenters
+          .map(center => window.FarmerPortal.renderCenterCard(center, true))
+          .join('');
+      }
+
+      // 7.5. Populate Crop Sale Summary & Profile Demo Stats
+      function renderSalesSummarySection() {
+        const summary = window.FarmerPortal.getSalesSummary();
+        const totalCropSoldEl = document.getElementById('dash-total-crop-sold');
+        const completedSalesEl = document.getElementById('dash-completed-sales');
+        const totalProcValueEl = document.getElementById('dash-total-proc-value');
+
+        if (totalCropSoldEl) totalCropSoldEl.textContent = `${summary.totalNetWeightQuintals.toFixed(2)} QTL`;
+        if (completedSalesEl) completedSalesEl.textContent = `${summary.completedSalesCount}`;
+        if (totalProcValueEl) totalProcValueEl.textContent = `₹${summary.totalNetProcurementValue.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+        const recentSale = window.FarmerPortal.getRecentSale();
+        const recentSaleContainer = document.getElementById('dash-recent-sale-container');
+        if (recentSale && recentSaleContainer) {
+          recentSaleContainer.classList.remove('hidden');
+          const recentCropEl = document.getElementById('dash-recent-crop');
+          const recentQtyEl = document.getElementById('dash-recent-quantity');
+          const recentMetaEl = document.getElementById('dash-recent-meta');
+          const recentLinkEl = document.getElementById('dash-recent-receipt-link');
+
+          if (recentCropEl) recentCropEl.textContent = `${recentSale.cropName || recentSale.commodity || 'फसल'}`;
+          if (recentQtyEl) recentQtyEl.textContent = `${Number(recentSale.netWeightQuintals || 0).toFixed(2)} QTL`;
+          if (recentMetaEl) {
+            recentMetaEl.textContent = `${recentSale.centerName || 'खरीद केंद्र'} • Net Demo Value: ₹${Number(recentSale.netAmountDue || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+          }
+          if (recentLinkEl) {
+            recentLinkEl.href = `receipt.html?id=${encodeURIComponent(recentSale.receiptId || recentSale.bookingId)}`;
+          }
+        }
+
+        // Profile stats
+        const stats = window.FarmerPortal.getFarmerProfileStats();
+        const statBookingsEl = document.getElementById('profile-stat-bookings');
+        const statSalesEl = document.getElementById('profile-stat-sales');
+        const statWeightEl = document.getElementById('profile-stat-weight');
+        if (statBookingsEl) statBookingsEl.textContent = stats.totalBookings;
+        if (statSalesEl) statSalesEl.textContent = stats.completedProcurements;
+        if (statWeightEl) statWeightEl.textContent = `${stats.totalWeightSoldQuintals.toFixed(1)} Q`;
+      }
+
+      renderSalesSummarySection();
+
+      // 8. Upcoming Feature dialog triggers
+      document.querySelectorAll('.upcoming-feature-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const msg = btn.getAttribute('data-feature') || 'यह सेवा अगले चरण में उपलब्ध होगी।';
+          window.FarmerPortal.showInfoModal('शीघ्र उपलब्ध सेवा (Coming Soon)', msg);
+        });
+      });
+    });
+  </script>
+
+  <!-- Cancellation Confirmation Modal on Dashboard -->
+  <div id="dash-cancel-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl border border-slate-200 space-y-4">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+            </path>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-base font-bold text-slate-900">
+            बुकिंग रद्द करें? (Confirm Cancellation)
+          </h3>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+            क्या आप यह बुकिंग रद्द करना चाहते हैं? रद्द करने के बाद यह स्लॉट खाली हो जाएगा।
+          </p>
+        </div>
+      </div>
+
+      <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-1">
+        <div class="flex justify-between">
+          <span class="text-slate-500">बुकिंग आईडी:</span>
+          <span class="font-mono font-bold text-slate-800" id="dash-modal-booking-id">-</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500">खरीद केंद्र:</span>
+          <span class="font-medium text-slate-800" id="dash-modal-center-name">-</span>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2.5 pt-2">
+        <button type="button" id="dash-modal-keep-btn" class="btn btn-outline btn-sm text-xs font-semibold py-2 px-4 text-slate-600">
+          रद्द न करें (Keep)
+        </button>
+        <button type="button" id="dash-modal-confirm-btn" class="btn btn-primary btn-sm bg-rose-600 hover:bg-rose-700 text-white border-rose-600 text-xs font-semibold py-2 px-4 shadow-xs">
+          हां, रद्द करें (Confirm Cancel)
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
